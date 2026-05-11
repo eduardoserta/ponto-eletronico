@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ponto Eletronico</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f5f3;--surface:#fff;--border:rgba(0,0,0,0.1);--border-md:rgba(0,0,0,0.18);--text:#1a1a18;--text-sec:#6b6b68;--text-ter:#9a9a96;--blue:#185FA5;--blue-bg:#E6F1FB;--blue-text:#0C447C;--green:#3B6D11;--green-bg:#EAF3DE;--amber:#854F0B;--amber-bg:#FAEEDA;--red:#A32D2D;--red-bg:#FCEBEB;--radius:10px;--radius-sm:6px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+.app{max-width:960px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.hidden{display:none!important}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.header-left h1{font-size:17px;font-weight:600;display:flex;align-items:center;gap:7px}
+.header-left p{font-size:13px;color:var(--text-sec);margin-top:2px}
+.btn-logout{font-size:13px;padding:6px 14px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:transparent;color:var(--text-sec);cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-logout:hover{background:var(--bg)}
+#view-login{display:flex;align-items:center;justify-content:center;min-height:85vh}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:100%;max-width:380px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.login-card .logo{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem}
+.login-card .logo i{font-size:28px;color:var(--blue)}
+.login-card .logo h2{font-size:18px;font-weight:600}
+.login-card .logo p{font-size:12px;color:var(--text-sec)}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:13px;color:var(--text-sec);margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-size:14px;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,0.1)}
+.field textarea{resize:vertical;min-height:70px;font-family:inherit}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{padding:9px 18px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;border:1px solid transparent}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue-text)}
+.btn-secondary{background:transparent;color:var(--text-sec);border-color:var(--border-md)}
+.btn-secondary:hover{background:var(--bg)}
+.btn-success{background:var(--green-bg);color:var(--green);border-color:rgba(63,109,17,0.2)}
+.btn-full{width:100%;justify-content:center}
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;width:fit-content}
+.tab{padding:7px 16px;border-radius:calc(var(--radius-sm) - 2px);border:none;background:transparent;color:var(--text-sec);cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px}
+.tab.active{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.card h3{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:6px;color:var(--text)}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+.metric{background:var(--bg);border-radius:var(--radius-sm);padding:1rem}
+.metric .label{font-size:12px;color:var(--text-sec);margin-bottom:4px}
+.metric .value{font-size:22px;font-weight:600}
+.clock-wrap{text-align:center;padding:1.5rem 0 1rem}
+.clock-wrap .time{font-size:44px;font-weight:300;letter-spacing:3px;font-variant-numeric:tabular-nums}
+.clock-wrap .date-str{font-size:14px;color:var(--text-sec);margin-top:4px}
+.punch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.punch-btn{padding:18px 12px;border:1px solid var(--border-md);border-radius:var(--radius);background:var(--bg);color:var(--text);cursor:pointer;font-size:14px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all .15s}
+.punch-btn i{font-size:26px;color:var(--text-sec)}
+.punch-btn small{font-size:12px;color:var(--text-sec);font-weight:400}
+.punch-btn:hover:not(:disabled){border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.punch-btn:hover:not(:disabled) i{color:var(--blue)}
+.punch-btn:disabled{opacity:.4;cursor:not-allowed}
+.punch-btn.done{background:var(--green-bg);border-color:rgba(63,109,17,0.3);color:var(--green)}
+.punch-btn.done i,.punch-btn.done small{color:var(--green)}
+.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+.badge-ok{background:var(--green-bg);color:var(--green)}
+.badge-pending{background:var(--amber-bg);color:var(--amber)}
+.badge-edited{background:var(--blue-bg);color:var(--blue-text)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:12px;color:var(--text-sec);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);font-weight:600;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.btn-icon{padding:5px 9px;border:1px solid var(--border-md);border-radius:var(--radius-sm);background:transparent;cursor:pointer;color:var(--text-sec);font-size:13px}
+.btn-icon:hover{background:var(--bg);color:var(--blue)}
+.filter-row{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-row select,.filter-row input[type=date]{padding:7px 10px;border:1px solid var(--border-md);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text)}
+.filter-row label{font-size:13px;color:var(--text-sec)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem}
+.modal{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.5rem;width:100%;max-width:440px;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:7px}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;z-index:300;animation:fadeIn .2s}
+.toast.error{background:var(--red)}
+.toast.success{background:var(--green)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.error-msg{color:var(--red);font-size:13px;margin-top:8px;text-align:center}
+#modal-senha .field input[type=password]{letter-spacing:2px}
+@media(max-width:580px){.metric-grid{grid-template-columns:repeat(2,1fr)}.field-row{grid-template-columns:1fr}.clock-wrap .time{font-size:34px}}
+</style>
+</head>
+<body>
+
+<div id="view-login">
+  <div class="login-card">
+    <div class="logo">
+      <i class="ti ti-fingerprint"></i>
+      <div><h2>Ponto Eletronico</h2><p>Consultorio</p></div>
+    </div>
+    <div class="field"><label>Usuario</label><input type="text" id="inp-login" placeholder="seu.login" autocomplete="username"/></div>
+    <div class="field"><label>Senha</label><input type="password" id="inp-senha" placeholder="......" autocomplete="current-password"/></div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()" style="margin-top:.5rem"><i class="ti ti-login"></i> Entrar</button>
+    <p id="login-error" class="error-msg hidden"></p>
+  </div>
+</div>
+
+<div id="view-app" class="hidden">
+  <div class="app">
+    <div class="header">
+      <div class="header-left"><h1><i class="ti ti-fingerprint"></i> Ponto Eletronico</h1><p id="header-sub"></p></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-logout" onclick="openSenha()" title="Alterar senha"><i class="ti ti-lock"></i></button>
+        <button class="btn-logout" onclick="doLogout()"><i class="ti ti-logout"></i> Sair</button>
+      </div>
+    </div>
+    <div id="view-secretary" class="hidden">
+      <div class="clock-wrap"><div class="time" id="clock">--:--:--</div><div class="date-str" id="date-str"></div></div>
+      <div class="card">
+        <h3><i class="ti ti-clock-check"></i> Registros de hoje</h3>
+        <div class="punch-grid">
+          <button class="punch-btn" id="btn-entrada" onclick="bater('entrada')"><i class="ti ti-login"></i> Entrada <small id="val-entrada">-</small></button>
+          <button class="punch-btn" id="btn-saida_almoco" onclick="bater('saida_almoco')"><i class="ti ti-soup"></i> Saida almoco <small id="val-saida_almoco">-</small></button>
+          <button class="punch-btn" id="btn-retorno_almoco" onclick="bater('retorno_almoco')"><i class="ti ti-arrow-back-up"></i> Retorno almoco <small id="val-retorno_almoco">-</small></button>
+          <button class="punch-btn" id="btn-saida" onclick="bater('saida')"><i class="ti ti-logout"></i> Saida <small id="val-saida">-</small></button>
+        </div>
+      </div>
+      <div class="card">
+        <h3><i class="ti ti-calendar"></i> Meus ultimos registros</h3>
+        <div class="table-wrap"><table><thead><tr><th>Data</th><th>Entrada</th><th>Saida alm.</th><th>Retorno</th><th>Saida</th><th>Total</th></tr></thead><tbody id="tbody-meus"></tbody></table></div>
+      </div>
+    </div>
+    <div id="view-admin" class="hidden">
+      <div class="tabs">
+        <button class="tab active" id="tab-registros" onclick="switchTab('registros')"><i class="ti ti-table"></i> Registros</button>
+        <button class="tab" id="tab-auditoria" onclick="switchTab('auditoria')"><i class="ti ti-history"></i> Auditoria</button>
+        <button class="tab" id="tab-usuarios" onclick="switchTab('usuarios')"><i class="ti ti-users"></i> Funcionarias</button>
+      </div>
+      <div id="panel-registros">
+        <div class="metric-grid" id="metrics"></div>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem">
+            <h3 style="margin:0"><i class="ti ti-table"></i> Registros de ponto</h3>
+            <button class="btn btn-success" onclick="exportarCSV()"><i class="ti ti-download"></i> Exportar CSV</button>
+          </div>
+          <div class="filter-row">
+            <select id="filtro-usuario" onchange="carregarRegistros()"><option value="">Todas as funcionarias</option></select>
+            <label>De <input type="date" id="filtro-inicio" onchange="carregarRegistros()"></label>
+            <label>Ate <input type="date" id="filtro-fim" onchange="carregarRegistros()"></label>
+            <button class="btn btn-secondary" onclick="limparFiltros()"><i class="ti ti-x"></i> Limpar</button>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Data</th><th>Funcionaria</th><th>Entrada</th><th>Saida alm.</th><th>Retorno</th><th>Saida</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="tbody-registros"></tbody></table></div>
+        </div>
+      </div>
+      <div id="panel-auditoria" class="hidden">
+        <div class="card"><h3><i class="ti ti-history"></i> Log de auditoria</h3>
+          <div class="table-wrap"><table><thead><tr><th>Data/hora</th><th>Funcionaria</th><th>Dia</th><th>Campo</th><th>Antes</th><th>Depois</th><th>Admin</th><th>Justificativa</th></tr></thead><tbody id="tbody-auditoria"></tbody></table></div>
+        </div>
+      </div>
+      <div id="panel-usuarios" class="hidden">
+        <div class="card"><h3><i class="ti ti-users"></i> Funcionarias cadastradas</h3>
+          <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Login</th><th></th></tr></thead><tbody id="tbody-usuarios"></tbody></table></div>
+          <button class="btn btn-primary" style="margin-top:1rem" onclick="openNovaFunc()"><i class="ti ti-plus"></i> Nova funcionaria</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-editar" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3><i class="ti ti-edit"></i> Editar registro</h3>
+    <p id="modal-edit-info" style="font-size:13px;color:var(--text-sec);margin-bottom:1rem"></p>
+    <div class="field-row">
+      <div class="field"><label>Entrada</label><input type="time" id="edit-entrada"/></div>
+      <div class="field"><label>Saida almoco</label><input type="time" id="edit-saida_almoco"/></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Retorno almoco</label><input type="time" id="edit-retorno_almoco"/></div>
+      <div class="field"><label>Saida</label><input type="time" id="edit-saida"/></div>
+    </div>
+    <div class="field"><label>Justificativa <span style="color:var(--red)">*</span></label><textarea id="edit-justificativa" placeholder="Motivo da alteracao..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fecharModal('modal-editar')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEdicao()"><i class="ti ti-check"></i> Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-senha" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3><i class="ti ti-lock"></i> Alterar senha</h3>
+    <div class="field"><label>Senha atual</label><input type="password" id="senha-atual"/></div>
+    <div class="field"><label>Nova senha</label><input type="password" id="senha-nova"/></div>
+    <div class="field"><label>Confirmar nova senha</label><input type="password" id="senha-conf"/></div>
+    <p id="senha-error" class="error-msg hidden"></p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fecharModal('modal-senha')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarSenha()"><i class="ti ti-check"></i> Alterar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-nova-func" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3><i class="ti ti-user-plus"></i> Nova funcionaria</h3>
+    <div class="field"><label>Nome completo</label><input type="text" id="nf-nome"/></div>
+    <div class="field"><label>Login</label><input type="text" id="nf-login" placeholder="ex: maria"/></div>
+    <div class="field"><label>Senha inicial</label><input type="password" id="nf-senha"/></div>
+    <p id="nf-error" class="error-msg hidden"></p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fecharModal('modal-nova-func')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarNovaFunc()"><i class="ti ti-check"></i> Criar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-reset-senha" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3><i class="ti ti-key"></i> Redefinir senha</h3>
+    <p id="reset-nome" style="font-size:13px;color:var(--text-sec);margin-bottom:1rem"></p>
+    <div class="field"><label>Nova senha</label><input type="password" id="reset-nova"/></div>
+    <p id="reset-error" class="error-msg hidden"></p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fecharModal('modal-reset-senha')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarResetSenha()"><i class="ti ti-check"></i> Redefinir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser=null,editingId=null,resetUserId=null;
+const $=id=>document.getElementById(id);
+function show(id){$(id).classList.remove('hidden')}
+function hide(id){$(id).classList.add('hidden')}
+function fmtData(iso){return iso?iso.split('-').reverse().join('/'):'--'}
+function calcTotal(r){if(!r.entrada||!r.saida)return '--';const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};let mins=toMin(r.saida)-toMin(r.entrada);if(r.saida_almoco&&r.retorno_almoco)mins-=(toMin(r.retorno_almoco)-toMin(r.saida_almoco));if(mins<0)return '--';return Math.floor(mins/60)+'h'+(mins%60).toString().padStart(2,'0')+'m'}
+function toast(msg,type=''){const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000)}
+async function api(url,opts={}){const res=await fetch(url,{headers:{'Content-Type':'application/json'},...opts});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||'Erro');return data}
+function fecharModal(id){hide(id)}
+async function doLogin(){const login=$('inp-login').value.trim(),senha=$('inp-senha').value;hide('login-error');try{const user=await api('/api/login',{method:'POST',body:JSON.stringify({login,senha})});currentUser=user;iniciarApp()}catch(e){$('login-error').textContent=e.message;show('login-error')}}
+$('inp-senha').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+async function doLogout(){await api('/api/logout',{method:'POST'});currentUser=null;hide('view-app');show('view-login');$('inp-login').value='';$('inp-senha').value=''}
+async function iniciarApp(){hide('view-login');show('view-app');$('header-sub').textContent='Ola, '+currentUser.nome+(currentUser.role==='admin'?' · Administrador':'');if(currentUser.role==='admin'){show('view-admin');await carregarUsuariosFiltro();await carregarRegistros()}else{show('view-secretary');iniciarRelogio();await carregarPontoHoje();await carregarMeusRegistros()}}
+window.addEventListener('load',async()=>{try{const user=await api('/api/me');if(user){currentUser=user;iniciarApp()}}catch(_){}});
+function iniciarRelogio(){function tick(){const now=new Date();$('clock').textContent=now.toLocaleTimeString('pt-BR');$('date-str').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}tick();setInterval(tick,1000)}
+async function carregarPontoHoje(){const reg=await api('/api/registro/hoje');atualizarBotoes(reg)}
+function atualizarBotoes(reg){const campos=['entrada','saida_almoco','retorno_almoco','saida'],deps={entrada:null,saida_almoco:'entrada',retorno_almoco:'saida_almoco',saida:'entrada'};campos.forEach(c=>{const btn=$('btn-'+c),val=$('val-'+c);if(reg[c]){btn.classList.add('done');btn.disabled=true;val.textContent=reg[c]}else{btn.classList.remove('done');const dep=deps[c];btn.disabled=dep?!reg[dep]:false;val.textContent='-'}})}
+async function bater(campo){try{const reg=await api('/api/registro/bater',{method:'POST',body:JSON.stringify({campo})});atualizarBotoes(reg);toast('Ponto registrado!','success');await carregarMeusRegistros()}catch(e){toast(e.message,'error')}}
+async function carregarMeusRegistros(){const regs=await api('/api/registro/meus');const tbody=$('tbody-meus');if(!regs.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-ter);padding:1.5rem">Nenhum registro ainda.</td></tr>';return}tbody.innerHTML=regs.map(r=>'<tr><td>'+fmtData(r.data)+'</td><td>'+(r.entrada||'--')+'</td><td>'+(r.saida_almoco||'--')+'</td><td>'+(r.retorno_almoco||'--')+'</td><td>'+(r.saida||'--')+'</td><td><strong>'+calcTotal(r)+'</strong></td></tr>').join('')}
+async function carregarUsuariosFiltro(){const users=await api('/api/admin/usuarios');const sel=$('filtro-usuario');sel.innerHTML='<option value="">Todas as funcionarias</option>'+users.map(u=>'<option value="'+u.id+'">'+u.nome+'</option>').join('')}
+async function carregarRegistros(){const uid=$('filtro-usuario').value,di=$('filtro-inicio').value,df=$('filtro-fim').value;const params=new URLSearchParams();if(uid)params.set('usuario_id',uid);if(di)params.set('data_inicio',di);if(df)params.set('data_fim',df);const regs=await api('/api/admin/registros?'+params);const hoje=new Date().toISOString().slice(0,10);$('metrics').innerHTML='<div class="metric"><div class="label">Registros hoje</div><div class="value">'+regs.filter(r=>r.data===hoje).length+'</div></div><div class="metric"><div class="label">Pendentes (sem saida)</div><div class="value">'+regs.filter(r=>!r.saida).length+'</div></div><div class="metric"><div class="label">Editados</div><div class="value">'+regs.filter(r=>r.editado).length+'</div></div>';const tbody=$('tbody-registros');if(!regs.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text-ter);padding:1.5rem">Nenhum registro encontrado.</td></tr>';return}tbody.innerHTML=regs.map(r=>'<tr><td>'+fmtData(r.data)+'</td><td>'+r.usuario_nome+'</td><td>'+(r.entrada||'--')+'</td><td>'+(r.saida_almoco||'--')+'</td><td>'+(r.retorno_almoco||'--')+'</td><td>'+(r.saida||'--')+'</td><td><strong>'+calcTotal(r)+'</strong></td><td>'+(r.editado?'<span class="badge badge-edited">Editado</span>':r.saida?'<span class="badge badge-ok">Completo</span>':'<span class="badge badge-pending">Pendente</span>')+'</td><td><button class="btn-icon" onclick="openEditar('+r.id+',''+r.usuario_nome+'',''+r.data+'',''+(r.entrada||'')+'',''+(r.saida_almoco||'')+'',''+(r.retorno_almoco||'')+'',''+(r.saida||'')+'')"><i class="ti ti-edit"></i></button></td></tr>').join('')}
+function limparFiltros(){$('filtro-usuario').value='';$('filtro-inicio').value='';$('filtro-fim').value='';carregarRegistros()}
+function openEditar(id,nome,data,entrada,saidaAlmoco,retornoAlmoco,saida){editingId=id;$('modal-edit-info').textContent=nome+' - '+fmtData(data);$('edit-entrada').value=entrada;$('edit-saida_almoco').value=saidaAlmoco;$('edit-retorno_almoco').value=retornoAlmoco;$('edit-saida').value=saida;$('edit-justificativa').value='';show('modal-editar')}
+async function salvarEdicao(){const justificativa=$('edit-justificativa').value.trim();if(!justificativa){toast('Informe a justificativa','error');return}try{await api('/api/admin/registro/'+editingId,{method:'PUT',body:JSON.stringify({entrada:$('edit-entrada').value||null,saida_almoco:$('edit-saida_almoco').value||null,retorno_almoco:$('edit-retorno_almoco').value||null,saida:$('edit-saida').value||null,justificativa})});fecharModal('modal-editar');toast('Registro atualizado!','success');await carregarRegistros()}catch(e){toast(e.message,'error')}}
+const camposLabel={entrada:'Entrada',saida_almoco:'Saida almoco',retorno_almoco:'Retorno almoco',saida:'Saida'};
+async function carregarAuditoria(){const logs=await api('/api/admin/auditoria');const tbody=$('tbody-auditoria');if(!logs.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-ter);padding:1.5rem">Nenhuma edicao registrada ainda.</td></tr>';return}tbody.innerHTML=logs.map(a=>'<tr><td style="font-size:12px;white-space:nowrap">'+a.timestamp+'</td><td>'+a.usuario_nome+'</td><td>'+fmtData(a.registro_data)+'</td><td>'+(camposLabel[a.campo]||a.campo)+'</td><td style="color:var(--text-sec)">'+(a.valor_antes||'--')+'</td><td style="color:var(--blue-text)">'+(a.valor_depois||'--')+'</td><td>'+a.admin_nome+'</td><td style="font-style:italic;font-size:12px">'+a.justificativa+'</td></tr>').join('')}
+async function carregarUsuarios(){const users=await api('/api/admin/usuarios');$('tbody-usuarios').innerHTML=users.map(u=>'<tr><td>'+u.nome+'</td><td><code style="font-size:12px">'+u.login+'</code></td><td><button class="btn-icon" onclick="openResetSenha('+u.id+',''+u.nome+'')"><i class="ti ti-key"></i> Redefinir senha</button></td></tr>').join('')}
+function openNovaFunc(){$('nf-nome').value='';$('nf-login').value='';$('nf-senha').value='';hide('nf-error');show('modal-nova-func')}
+async function salvarNovaFunc(){const nome=$('nf-nome').value.trim(),login=$('nf-login').value.trim(),senha=$('nf-senha').value;hide('nf-error');try{await api('/api/admin/usuario',{method:'POST',body:JSON.stringify({nome,login,senha})});fecharModal('modal-nova-func');toast('Funcionaria criada!','success');await carregarUsuarios();await carregarUsuariosFiltro()}catch(e){$('nf-error').textContent=e.message;show('nf-error')}}
+function openResetSenha(id,nome){resetUserId=id;$('reset-nome').textContent='Funcionaria: '+nome;$('reset-nova').value='';hide('reset-error');show('modal-reset-senha')}
+async function salvarResetSenha(){const nova_senha=$('reset-nova').value;try{await api('/api/admin/usuario/'+resetUserId+'/senha',{method:'PUT',body:JSON.stringify({nova_senha})});fecharModal('modal-reset-senha');toast('Senha redefinida!','success')}catch(e){$('reset-error').textContent=e.message;show('reset-error')}}
+function openSenha(){$('senha-atual').value='';$('senha-nova').value='';$('senha-conf').value='';hide('senha-error');show('modal-senha')}
+async function salvarSenha(){const sa=$('senha-atual').value,sn=$('senha-nova').value,sc=$('senha-conf').value;hide('senha-error');if(sn!==sc){$('senha-error').textContent='As senhas nao coincidem.';show('senha-error');return}try{await api('/api/usuario/senha',{method:'POST',body:JSON.stringify({senha_atual:sa,nova_senha:sn})});fecharModal('modal-senha');toast('Senha alterada com sucesso!','success')}catch(e){$('senha-error').textContent=e.message;show('senha-error')}}
+async function switchTab(tab){['registros','auditoria','usuarios'].forEach(t=>{$('tab-'+t).classList.toggle('active',t===tab);$('panel-'+t).classList.toggle('hidden',t!==tab)});if(tab==='auditoria')await carregarAuditoria();if(tab==='usuarios')await carregarUsuarios()}
+function exportarCSV(){const uid=$('filtro-usuario').value,di=$('filtro-inicio').value,df=$('filtro-fim').value;const params=new URLSearchParams();if(uid)params.set('usuario_id',uid);if(di)params.set('data_inicio',di);if(df)params.set('data_fim',df);window.location.href='/api/admin/exportar?'+params}
+document.querySelectorAll('.modal-backdrop').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.add('hidden')})});
+</script>
+</body>
+</html>
