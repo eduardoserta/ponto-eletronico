@@ -61,8 +61,8 @@ function criarUsuarioPadrao(nome, login, senha, role) {
   }
 }
 
-criarUsuarioPadrao('Ana Paula', 'ana', 'Ana@1234', 'secretary');
-criarUsuarioPadrao('Fernanda Lima', 'fernanda', 'Fernanda@1234', 'secretary');
+criarUsuarioPadrao('Cristiane', 'cristiane', 'Cristiane@1234', 'secretary');
+criarUsuarioPadrao('Andrea', 'andrea', 'Andrea@1234', 'secretary');
 criarUsuarioPadrao('Administrador', 'admin', 'Admin@123', 'admin');
 
 app.use(express.json());
